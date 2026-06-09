@@ -12,25 +12,25 @@ from sentence_transformers import SentenceTransformer, util
 # Set page layout to wide
 st.set_page_config(page_title="Petition Routing Dashboard", layout="wide")
 
-# ==========================================
 # CACHED SYSTEM INITIALIZATION
 # ==========================================
 @st.cache_resource
 def load_resources():
-    """Load the Excel sheet and ML model once and cache them in memory."""
+    """Load the Excel sheet, pre-calculated embeddings, and the ML model."""
     excel_filename = "taxonomy.xlsx"
+    embeddings_filename = "taxonomy_embeddings.npy"
+    
+    # Load DataFrame
     df = pd.read_excel(excel_filename)
     df.columns = df.columns.str.strip()
 
-    # Standard English search text construction
-    df['search_text'] = (
-        "Grievance: " + df['Grievance Type'].astype(str) + " -> " + df['Grievance Sub Type'].astype(str) +
-        "Department: " + df['Department Name'].astype(str) + " -> " + df['Sub Department'].astype(str)
-    )
+    # Load the pre-calculated embeddings (takes less than a second)
+    import torch
+    embeddings_raw = np.load(embeddings_filename)
+    embeddings = torch.from_numpy(embeddings_raw) # Convert to PyTorch tensor for cosine similarity
 
-    # Loading model for legal terms mapping
+    # Loading model (only used now to encode the single incoming user query)
     model = SentenceTransformer('sentence-transformers/all-mpnet-base-v2')
-    embeddings = model.encode(df['search_text'].tolist(), convert_to_tensor=True, show_progress_bar=False)
 
     return df, model, embeddings
 
