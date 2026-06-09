@@ -54,7 +54,7 @@ except Exception as e:
 # ==========================================
 
 def preprocess_pdf_to_images(pdf_path):
-    pages = convert_from_path(pdf_path, dpi=150) # Balanced DPI for speed and clarity
+    pages = convert_from_path(pdf_path, dpi=90) # Balanced DPI for speed and clarity
     return [page.convert('RGB') for page in pages]
 
 def extract_from_multiple_images(images_list):
@@ -90,7 +90,7 @@ def extract_from_multiple_images(images_list):
     contents.append(prompt)
 
     response = ai_client.models.generate_content(
-        model='gemini-2.5-flash',  # Updated to standard stable version
+        model='gemini-1.5-flash',  # Updated to standard stable version
         contents=contents,
         config=types.GenerateContentConfig(response_mime_type="application/json")
     )
@@ -142,7 +142,7 @@ def select_best_candidate_with_gemini(english_grievance, candidates):
     Do not include markdown formatting or backticks around the JSON.
     """
     response = ai_client.models.generate_content(
-        model='gemini-2.5-flash',
+        model='gemini-1.5-flash',
         contents=prompt,
         config=types.GenerateContentConfig(response_mime_type="application/json")
     )
