@@ -54,7 +54,7 @@ except Exception as e:
 # ==========================================
 
 def preprocess_pdf_to_images(pdf_path):
-    pages = convert_from_path(pdf_path, dpi=150)
+    pages = convert_from_path(pdf_path, dpi=200)
     return [page.convert('RGB') for page in pages]
 
 def extract_from_multiple_images(images_list):
@@ -191,7 +191,7 @@ else:
             st.text_area(
                     label=" ",
                     value=extraction_result.get("full_petition_ocr"),
-                    height=450
+                    height=500
                 )
 
             st.subheader("👤 Petitioner Profile")
@@ -201,7 +201,7 @@ else:
             st.write(f"**Address:** {extraction_result.get('address_details')}")
             st.write(f"**Mentioned Attachments:** {', '.join(extraction_result.get('attachments', [])) if extraction_result.get('attachments') else 'None'}")
             st.subheader("📝 Summarized Grievance")
-            st.text_area("English Summary: ", english_summary, height=200)
+            st.text_area("English Summary: ", english_summary, height=100)
 
             st.subheader("🎯 Department & Category Routing")
             st.write(f"**Assigned Department:** {final_routing.get('Department Name')}")
