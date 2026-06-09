@@ -1,0 +1,7 @@
+streamlit
+pdf2image
+sentence-transformers
+pandas
+openpyxl
+pillow
+google-genai
